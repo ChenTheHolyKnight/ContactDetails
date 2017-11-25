@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using System.Text.RegularExpressions;
 
 namespace AndroidApp1
 {
@@ -53,14 +54,32 @@ namespace AndroidApp1
             };
             _submitBtn.Click += (sender, e) =>
              {
-                 Person person = new Person() { FirstName = _firstNameTxt.Text, LastName = _lastNameTxt.Text,PhoneNumber=_phoneNumberTxt.Text };
-                 _dataBase.insertIntoTablePerson(person);
+                 Regex letterRegex = new Regex("^[a - zA - z] +$$");
+                 Regex numRegex = new Regex("^(0|[1-9][0-9]*)$");
+                 if (letterRegex.IsMatch(_firstNameTxt.Text) && letterRegex.IsMatch(_lastNameTxt.Text) && numRegex.IsMatch(_phoneNumberTxt.Text))
+                 {
+                     Person person = new Person() { FirstName = _firstNameTxt.Text, LastName = _lastNameTxt.Text, PhoneNumber = _phoneNumberTxt.Text };
+                     _dataBase.insertIntoTablePerson(person);
 
-                 _listPeople = _dataBase.selectTablePerson();
-                 var adapter = new ListViewAdapter(_mainActivity, _listPeople);
-                 _listView.Adapter = adapter;
+                     _listPeople = _dataBase.selectTablePerson();
+                     var adapter = new ListViewAdapter(_mainActivity, _listPeople);
+                     _listView.Adapter = adapter;
 
-                 Dismiss();
+                     Dismiss();
+                 }
+                 else {
+                     AlertDialog.Builder dialog = new AlertDialog.Builder(view.Context,  AlertDialog.ThemeHoloLight);
+                     AlertDialog alert = dialog.Create();
+                     alert.SetTitle("Title");
+                     alert.SetMessage("Please enter a valid name and a phone number");
+                     alert.SetButton("OK", (c, ev) =>
+                     {
+                         Dismiss();  
+                     });
+                     alert.Show();
+                 }
+
+                
              };
 
             return view;
