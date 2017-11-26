@@ -62,7 +62,7 @@ namespace AndroidApp1
                      Dismiss();
                  }
                  else {
-                     AlertDialog.Builder dialog = new AlertDialog.Builder(view.Context,  AlertDialog.ThemeHoloLight);
+                     AlertDialog.Builder dialog = new AlertDialog.Builder(view.Context, AlertDialog.ThemeHoloLight);
                      AlertDialog alert = dialog.Create();
                      alert.SetTitle("Title");
                      alert.SetMessage("Please enter a valid name and phone number");
