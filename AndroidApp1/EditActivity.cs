@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace AndroidApp1
 {
@@ -63,17 +64,35 @@ namespace AndroidApp1
 
             submitButton.Click += (sender, e) =>
             {
-                Person person1 = new Person()
+                Regex letterRegex = new Regex("^[a-zA-z]+$$");
+                Regex numRegex = new Regex("^(0|[1-9][0-9]*)$");
+                if (letterRegex.IsMatch(firstName.Text) && letterRegex.IsMatch(lastName.Text) && numRegex.IsMatch(phoneNumber.Text))
                 {
-                    Id = int.Parse(firstName.Tag.ToString()),
-                    FirstName = firstName.Text,
-                    LastName = lastName.Text,
-                    PhoneNumber=phoneNumber.Text
-                };
-                bool b=database.updateTablePerson(person1);
-                Console.WriteLine(b);
-                Intent intent = new Intent(this, typeof(MainActivity));
-                StartActivity(intent);
+                    Person person1 = new Person()
+                    {
+                        Id = int.Parse(firstName.Tag.ToString()),
+                        FirstName = firstName.Text,
+                        LastName = lastName.Text,
+                        PhoneNumber = phoneNumber.Text
+                    };
+                    bool b = database.updateTablePerson(person1);
+                    Console.WriteLine(b);
+                    Intent intent = new Intent(this, typeof(MainActivity));
+                    StartActivity(intent);
+                }
+                else
+                {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this, AlertDialog.ThemeHoloLight);
+                    AlertDialog alert = dialog.Create();
+                    alert.SetTitle("Title");
+                    alert.SetMessage("Please enter a valid name and phone number");
+                    alert.SetButton("OK", (c, ev) =>
+                    {
+                        alert.Dismiss();
+                    });
+                    alert.Show();
+
+                }
             };
         }
     }

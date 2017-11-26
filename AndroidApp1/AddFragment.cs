@@ -54,7 +54,7 @@ namespace AndroidApp1
             };
             _submitBtn.Click += (sender, e) =>
              {
-                 Regex letterRegex = new Regex("^[a - zA - z] +$$");
+                 Regex letterRegex = new Regex("^[a-zA-z]+$$");
                  Regex numRegex = new Regex("^(0|[1-9][0-9]*)$");
                  if (letterRegex.IsMatch(_firstNameTxt.Text) && letterRegex.IsMatch(_lastNameTxt.Text) && numRegex.IsMatch(_phoneNumberTxt.Text))
                  {
@@ -71,10 +71,10 @@ namespace AndroidApp1
                      AlertDialog.Builder dialog = new AlertDialog.Builder(view.Context,  AlertDialog.ThemeHoloLight);
                      AlertDialog alert = dialog.Create();
                      alert.SetTitle("Title");
-                     alert.SetMessage("Please enter a valid name and a phone number");
+                     alert.SetMessage("Please enter a valid name and phone number");
                      alert.SetButton("OK", (c, ev) =>
-                     {
-                         Dismiss();  
+                     { 
+                         alert.Dismiss();
                      });
                      alert.Show();
                  }
